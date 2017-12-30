@@ -1,30 +1,18 @@
-# a = [[0,0,0,0,0,0],
-#  	 [0,0,1,1,0,0],
-#  	 [0,1,0,0,1,0],
-#  	 [0,0,1,0,1,0],
-#  	 [0,0,0,1,0,0],
-#  	 [0,0,0,0,0,0]]
+import numpy as np 
+import os
 
-a = [[0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,1,0,0,0,0],
- 	 [0,0,0,0,1,0,0,0,0,0],
- 	 [0,0,0,0,1,1,1,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0]]
+a = [[0,1,0],
+ 	 [0,1,0],
+ 	 [0,1,0]]
 
-#a = [[0,1,0],
-#	 [1,1,1],
-#	 [0,1,0]]
 
 def imprimirTabla(tabla):
 	for k in tabla:
 		for j in k:
 			print j,
 		print
+	print "--------------------------"
+	print "\n"
 
 def revisarVecinos(tabla, pos): ##Revision de los vecinos de cada posicion
 	
@@ -65,72 +53,28 @@ def revisarVecinos(tabla, pos): ##Revision de los vecinos de cada posicion
 #Una celula muerta con exactamente 3 celulas vecinas vivas "nace" (es decir, al turno siguiente estara viva).
 #Una celula viva con 2 o 3 celulas vecinas vivas sigue viva, en otro caso muere o permanece muerta (por "soledad" o "superpoblacion").
 
-print "\n"
-vecinosVivos = 0
+
+def nuevaGeneracion(tabla):
+	vecinosVivos = 0 				
+	resultado = np.zeros_like(tabla)
+	for i in range(len(tabla)):
+		for j in range(len(tabla)):
+			vecinosVivos = revisarVecinos(tabla,(i,j))
+			if tabla[i][j] == 0 and vecinosVivos == 3:
+				resultado[i][j] = 1
+			elif tabla[i][j] == 1 and vecinosVivos < 2:
+				resultado[i][j] = 0
+			elif tabla[i][j] == 1 and vecinosVivos > 3:
+				resultado[i][j] = 0
+			elif tabla[i][j] == 1 and (vecinosVivos == 2 or vecinosVivos == 3):
+				resultado[i][j] = 1
+
+	imprimirTabla(resultado)	
+	raw_input('Presione enter para continuar:')	
+	os.system("clear")	
+	nuevaGeneracion(resultado)
+
+		
+
 imprimirTabla(a)
-print "--------------------------"
-print "\n"
-
-t = [[0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0]]
-
-for i in range(10):
-	for j in range(10):
-		
-		vecinosVivos = revisarVecinos(a,(i,j))
-		
-		if a[i][j] == 0 and vecinosVivos == 3:
-			t[i][j] = 1
-		elif a[i][j] == 1 and vecinosVivos < 2:
-			t[i][j] = 0
-		elif a[i][j] == 1 and vecinosVivos > 3:
-			t[i][j] = 0
-		elif a[i][j] == 1 and (vecinosVivos == 2 or vecinosVivos == 3):
-			t[i][j] = 1
-
-		
-
-
-imprimirTabla(t)
-print "--------------------------"
-print "\n"
-
-r = [[0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0],
- 	 [0,0,0,0,0,0,0,0,0,0]]
-
-for i in range(10):
-	for j in range(10):
-		vecinosVivos = revisarVecinos(t,(i,j))
-		if t[i][j] == 0 and vecinosVivos == 3:
-			r[i][j] = 1
-		elif t[i][j] == 1 and vecinosVivos < 2:
-			r[i][j] = 0
-		elif t[i][j] == 1 and vecinosVivos > 3:
-			r[i][j] = 0
-		elif t[i][j] == 1 and (vecinosVivos == 2 or vecinosVivos == 3):
-			r[i][j] = 1
-
-
-imprimirTabla(r)
-print "--------------------------"
-print "\n"
-
-
-
-
+nuevaGeneracion(a)
