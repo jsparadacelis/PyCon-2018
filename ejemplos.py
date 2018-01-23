@@ -1,5 +1,6 @@
 from functools import reduce
 from operator import mul
+from itertools import islice
 import timeit
 naturales = range(1,11)
 
@@ -39,7 +40,7 @@ l2 = [n ** 2 for n in naturales]
 s = 0
 for n in range(1, 11):
 	s += n
-print(s)
+##print(s)
 
 ##Lo anterior produce el mismo resultado que
 def sum(seq):
@@ -99,8 +100,64 @@ def es_par(n):
 l = [1, 2, 3]
 l2 = filter(es_par, l)
 
-print l2
-print mult_3_5(6)
-print factorialHOF(6)
-print factorialReduce(6)
-print sum(naturales)
+
+expr, res = "28*32***32**39", 1
+for t in expr.split("*"):
+    if t != "":
+       res *= int(t)
+  
+
+
+expr = "28*32***32**39"
+print filter(bool, expr.split("*"))
+
+
+def factorial(numero):
+	if numero == 0 or numero == 1:
+		return 1
+	else:
+		return numero*factorial(numero-1)
+
+print reduce(mul, map(int, filter(bool, expr.split("*"))), 1)
+    
+print factorial(5)
+
+#Ejemplo  No. 6 Generadores 
+
+def generator():
+    i = 1
+    while True:
+        yield i
+        i += 1
+
+ 
+def take(n, iterable):
+    return list(islice(iterable, n))
+ 
+print take(5, generator())
+
+def fibonacci():
+  a, b = 0, 1
+  while True:
+    yield a
+    a, b = b, a + b
+
+#EJemplo de range entre Python2.X y Python 3.X
+range(5)
+#[1,2,3,4,5]
+
+range(5)
+#range(0,5) esto en python 3.X mismo resultado utilizando xrange() en python2.X
+
+##Ejemplo de iterator
+
+delUnoAlCinco = [1,2,3,4,5]
+it = iter(delUnoAlCinco)
+print it 
+
+
+# print l2
+# print mult_3_5(6)
+# print factorialHOF(6)
+# print factorialReduce(6)
+# print sum(naturales)
